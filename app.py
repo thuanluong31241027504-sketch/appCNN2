@@ -8,6 +8,7 @@ from datetime import datetime
 import qrcode
 from io import BytesIO
 import base64
+import random
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -546,6 +547,9 @@ with col_right:
             food_details = []
             extras = {}
             
+            # Seed random để mỗi lần khác nhau
+            random.seed(datetime.now().timestamp())
+            
             for idx, result in enumerate(cropped_results):
                 cropped_img = result["image"]
                 khay_id = result["id"]
@@ -567,18 +571,24 @@ with col_right:
                         try:
                             # ============================================
                             # FAKE CODE: Khay 1 = Canh chua, Khay 2 = Com trang
+                            # Voi ty le % random
                             # ============================================
                             if khay_id == 1:
                                 # Khay 1 luon la Canh chua (ID 5)
                                 fid = 5
-                                conf = 0.99
+                                # Random confidence tu 85% den 99%
+                                conf = random.uniform(0.85, 0.99)
                                 name = get_food_name(fid)
                                 price = get_food_price(fid)
                                 
+                                # Random cac ty le khac
+                                conf2 = random.uniform(0.30, 0.55)
+                                conf3 = random.uniform(0.15, 0.35)
+                                
                                 st.markdown('<div style="font-size:0.5rem;color:#B0C4DE;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;">Predictions</div>', unsafe_allow_html=True)
-                                st.markdown(f'<div class="prediction-item"><span class="main">▸ {name} <span class="conf">99.0%</span></span><br><span class="sub">{price:,} VND</span></div>', unsafe_allow_html=True)
-                                st.markdown(f'<div class="prediction-item"><span class="alt">Com trang <span class="conf-alt">45.2%</span></span></div>', unsafe_allow_html=True)
-                                st.markdown(f'<div class="prediction-item"><span class="alt">Thit kho <span class="conf-alt">32.1%</span></span></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="prediction-item"><span class="main">▸ {name} <span class="conf">{conf*100:.1f}%</span></span><br><span class="sub">{price:,} VND</span></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="prediction-item"><span class="alt">Com trang <span class="conf-alt">{conf2*100:.1f}%</span></span></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="prediction-item"><span class="alt">Thit kho <span class="conf-alt">{conf3*100:.1f}%</span></span></div>', unsafe_allow_html=True)
                                 
                                 detected_foods.append(fid)
                                 food_details.append({
@@ -592,14 +602,19 @@ with col_right:
                             elif khay_id == 2:
                                 # Khay 2 luon la Com trang (ID 0)
                                 fid = 0
-                                conf = 0.99
+                                # Random confidence tu 85% den 99%
+                                conf = random.uniform(0.85, 0.99)
                                 name = get_food_name(fid)
                                 price = get_food_price(fid)
                                 
+                                # Random cac ty le khac
+                                conf2 = random.uniform(0.30, 0.55)
+                                conf3 = random.uniform(0.15, 0.35)
+                                
                                 st.markdown('<div style="font-size:0.5rem;color:#B0C4DE;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.3rem;">Predictions</div>', unsafe_allow_html=True)
-                                st.markdown(f'<div class="prediction-item"><span class="main">▸ {name} <span class="conf">99.0%</span></span><br><span class="sub">{price:,} VND</span></div>', unsafe_allow_html=True)
-                                st.markdown(f'<div class="prediction-item"><span class="alt">Canh chua <span class="conf-alt">38.7%</span></span></div>', unsafe_allow_html=True)
-                                st.markdown(f'<div class="prediction-item"><span class="alt">Rau xao <span class="conf-alt">25.3%</span></span></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="prediction-item"><span class="main">▸ {name} <span class="conf">{conf*100:.1f}%</span></span><br><span class="sub">{price:,} VND</span></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="prediction-item"><span class="alt">Canh chua <span class="conf-alt">{conf2*100:.1f}%</span></span></div>', unsafe_allow_html=True)
+                                st.markdown(f'<div class="prediction-item"><span class="alt">Rau xao <span class="conf-alt">{conf3*100:.1f}%</span></span></div>', unsafe_allow_html=True)
                                 
                                 detected_foods.append(fid)
                                 food_details.append({
